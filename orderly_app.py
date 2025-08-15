@@ -267,6 +267,11 @@ class OrderlyApp(ctk.CTk):
 
     def switch_to_organize_tab(self):
         """Switches the active tab to the 'Organize Files' tab."""
+        # BUG FIX: Do not switch tabs if the button is disabled.
+        if self.organize_results_button.cget('state') == 'disabled':
+            logging.warning("Attempted to click disabled 'Organize Results' button. Action blocked.")
+            return
+
         self.tabview.set("Organize Files")
         self.update_status("Switched to Organize Files tab.", color="white")
         logging.info("Switched to Organize Files tab.")
