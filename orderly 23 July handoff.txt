@@ -1,0 +1,57 @@
+orderly 23 July handoff
+
+START OF HANDOFF DOCUMENT: Project Curator (Orderly)
+Document Version: 1.0
+Date: [Current Date]
+Purpose: This document serves as the master project brief and "save state" for Project Curator (Orderly). It synthesizes our progress, key decisions, and immediate next steps to ensure seamless continuity.
+1. Executive Summary & Vision
+The Idea: Project Curator is the internal codename for Orderly, a sleek, modern, and intuitive desktop utility for Windows. Its core purpose is to provide users with a fast, powerful, and secure way to find, manage, and organize their local files based on filenames and types, without relying on cloud services.
+The Vision: The long-term vision is a Freemium model.
+Orderly (Free Version): The application we are currently building. It will be a fully-featured, powerful tool for all filename and file-type search and organization tasks. It will be fast, private (100% local), and free forever.
+Orderly Pro (Paid Version): A future, monetized version that will build upon the free core by adding advanced "power user" features, such as deep content search (inside PDFs, DOCX), OCR search for images, and a rules-based engine for automated folder organization.
+2. Tech Stack
+Language: Python 3.13
+GUI Framework: CustomTkinter (for a modern look and feel)
+Core Libraries:
+fuzzywuzzy & python-Levenshtein: For intelligent, high-performance fuzzy string matching.
+send2trash: For safe file deletion that moves items to the Recycle Bin instead of permanently deleting them.
+Packaging (Planned): PyInstaller (to create the final standalone .exe file).
+3. Project Plan & Status
+(Legend: ✅ Done, 🟠 In Progress / Next Up, 🔵 To Be Done, ⚫️ Future Vision)
+✅ Phase 1: Project Setup & Foundation
+Project (Project_Curator) and virtual environment created.
+Git repository initialized for version control.
+All necessary libraries installed.
+✅ Phase 2: Core UI & Basic Search
+Main application window and layout established.
+Core functionality for selecting a folder and performing a basic, case-sensitive search implemented.
+✅ Phase 3: Advanced Search & Actions (Current State)
+UI: Migrated to a tabbed interface ("Search & Act", "Organize Files").
+Advanced Search: Implemented Case-Insensitive, Fuzzy Match (as a switch), and Search by Extension modes.
+File Actions: Implemented "Open File" and a safe "Delete File" (to Recycle Bin) with a robust, typed-word confirmation dialog.
+UX Polish: Added a global status bar for clear user feedback, console logging for debugging, an explicit "Search" button, and an "Organize Results" button that appears when files are found.
+Bug Fixing: Completed an extensive debugging and refinement cycle to fix numerous UI quirks related to the search entry placeholder and button states. The last full code file provided represents the stable conclusion of this phase.
+🟠 Phase 4: Organize Feature (Immediate Next Step)
+UI Complete: The "Organize Files" tab UI is fully built with an input for the new folder name, "Copy/Move" radio buttons, and the main "Organize" button.
+Logic To Be Done: The core organize_files function is currently a placeholder. Our next task is to implement the logic to create the new folder and perform the copy/move operations, including handling filename conflicts.
+🔵 Phase 5: Final Polish & Packaging
+Add icons to buttons for a more professional look.
+Perform final user acceptance testing.
+Use PyInstaller to package the application into a single, distributable Orderly.exe file.
+⚫️ Phase 6: "Pro" Version Features
+Deep content search, OCR, automation rules, etc.
+4. Key Discussions & Decisions
+Project Name: Project Curator is the internal development name. Orderly will be the public-facing product name.
+Development Process: We will continue with a Single-File with Structured Sections approach. This maintains simplicity while providing logical separation and allowing for precise, block-level code replacements.
+Safety First:
+Deletion uses send2trash to move files to the Recycle Bin, not permanently delete them.
+Destructive actions ("Delete", "Move", "Copy") will require a robust confirmation dialog where the user must type the action's name (e.g., DELETE) to proceed.
+Conflict Handling: The "Organize" feature will handle duplicate filenames in the destination by automatically renaming them (e.g., report.pdf becomes report (1).pdf).
+UI/UX:
+A global status bar is the primary method for non-interruptive user feedback.
+The "Organize Results" button on the "Search & Act" tab serves as a clear call-to-action to guide users to the "Organize Files" tab.
+Search options will be intelligent (e.g., "Case Sensitive" is automatically disabled for fuzzy/extension searches).
+5. State of the Code & Immediate Next Steps for Next Session
+Current Code: The last full orderly_app.py file I provided is our new, stable baseline. It contains all the fixes from our last debugging session, including the centralized logic for the "Organize Results" button state.
+Immediate Next Action: Your first task in the next session will be to run a final, focused test of that stable code, specifically confirming that the "Organize Results" button is disabled on startup and after a search with zero results, and enabled only after a search with one or more results.
+After Confirmation: Once the test is successful, we will begin implementing the core logic for the organize_files function, starting with folder creation and file moving/copying.
