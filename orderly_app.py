@@ -529,7 +529,7 @@ class OrderlyApp(ctk.CTk):
                         base, ext = os.path.splitext(filename)
                         i = 1
                         while os.path.exists(destination_path):
-                            destination_path = os.path.jttroin(destination_folder_path, f"{base} ({i}){ext}")
+                            destination_path = os.path.join(destination_folder_path, f"{base} ({i}){ext}")
                             i += 1
 
                     # Perform the copy or move
