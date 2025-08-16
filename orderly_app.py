@@ -200,9 +200,14 @@ class OrderlyApp(ctk.CTk):
     def update_organize_ui_state(self):
         """Centralized function to update the 'Organize Results' button and file count label."""
         has_files = bool(self.found_files_map)
-        new_state = "normal" if has_files else "disabled"
 
-        self.organize_results_button.configure(state=new_state)
+        if has_files:
+            # Enable the button and assign its command
+            self.organize_results_button.configure(state="normal", command=self.switch_to_organize_tab)
+        else:
+            # Disable the button and remove its command to be certain it's inactive
+            self.organize_results_button.configure(state="disabled", command=lambda: None)
+
         self.found_files_count_label.configure(text=f"Files to organize: {len(self.found_files_map)}")
 
     def on_extension_switch_toggle(self):
@@ -267,11 +272,6 @@ class OrderlyApp(ctk.CTk):
 
     def switch_to_organize_tab(self):
         """Switches the active tab to the 'Organize Files' tab."""
-        # BUG FIX: Do not switch tabs if the button is disabled.
-        if self.organize_results_button.cget('state') == 'disabled':
-            logging.warning("Attempted to click disabled 'Organize Results' button. Action blocked.")
-            return
-
         self.tabview.set("Organize Files")
         self.update_status("Switched to Organize Files tab.", color="white")
         logging.info("Switched to Organize Files tab.")
