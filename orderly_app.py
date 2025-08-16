@@ -43,6 +43,7 @@ class OrderlyApp(ctk.CTk):
 
         # Internal state for manual placeholder management and text colors
         self.search_entry_placeholder_text_value = "Enter keyword to search for..."
+        self.new_folder_entry_placeholder_text_value = "e.g., GMC Reports 2024"
         self.placeholder_color = "gray"
         self.normal_text_color = ("black", "white")  # Default for dark/light mode
 
@@ -74,7 +75,7 @@ class OrderlyApp(ctk.CTk):
         self.search_controls_frame.grid_columnconfigure(1, weight=1)
         self.search_controls_frame.grid_columnconfigure(2, weight=0)
 
-        self.select_folder_button = ctk.CTkButton(self.search_controls_frame, text="Select Folder",
+        self.select_folder_button = ctk.CTkButton(self.search_controls_frame, text="📂 Select Folder",
                                                   command=self.select_folder_and_search)
         self.select_folder_button.grid(row=0, column=0, padx=10, pady=10)
 
@@ -84,7 +85,7 @@ class OrderlyApp(ctk.CTk):
         self.search_entry.bind("<FocusIn>", self.on_search_entry_focus_in)
         self.search_entry.bind("<FocusOut>", self.on_search_entry_focus_out)
 
-        self.search_button = ctk.CTkButton(self.search_controls_frame, text="Search", command=self.trigger_search)
+        self.search_button = ctk.CTkButton(self.search_controls_frame, text="🔍 Search", command=self.trigger_search)
         self.search_button.grid(row=0, column=2, padx=10, pady=10)
 
         self.selected_folder_label = ctk.CTkLabel(self.search_controls_frame, text="No folder selected.",
@@ -113,7 +114,7 @@ class OrderlyApp(ctk.CTk):
         self.search_mode_switch.pack(side="left", padx=20)
 
         # 1b. Organize Call-to-Action Button
-        self.organize_results_button = ctk.CTkButton(self.search_controls_frame, text="Organize Results",
+        self.organize_results_button = ctk.CTkButton(self.search_controls_frame, text="📦 Organize Found Files...",
                                                      command=self.switch_to_organize_tab)
         self.organize_results_button.grid(row=3, column=0, columnspan=3, padx=10, pady=(10, 0), sticky="ew")
 
@@ -130,10 +131,10 @@ class OrderlyApp(ctk.CTk):
         self.actions_frame = ctk.CTkFrame(self.search_tab)
         self.actions_frame.grid(row=2, column=0, padx=10, pady=(5, 10), sticky="ew")
 
-        self.open_button = ctk.CTkButton(self.actions_frame, text="Open File", command=self.open_selected_file)
+        self.open_button = ctk.CTkButton(self.actions_frame, text="↗️ Open File", command=self.open_selected_file)
         self.open_button.pack(side="left", padx=10, pady=5)
 
-        self.delete_button = ctk.CTkButton(self.actions_frame, text="Delete File", fg_color="#D32F2F",
+        self.delete_button = ctk.CTkButton(self.actions_frame, text="🗑️ Delete File", fg_color="#D32F2F",
                                            hover_color="#B71C1C", command=self.delete_selected_file)
         self.delete_button.pack(side="left", padx=10, pady=5)
 
@@ -154,8 +155,10 @@ class OrderlyApp(ctk.CTk):
         self.new_folder_label = ctk.CTkLabel(self.organize_controls_frame, text="New Folder Name:", anchor="w")
         self.new_folder_label.grid(row=2, column=0, padx=10, pady=(0, 5), sticky="w")
 
-        self.new_folder_entry = ctk.CTkEntry(self.organize_controls_frame, placeholder_text="e.g., GMC Reports 2024")
+        self.new_folder_entry = ctk.CTkEntry(self.organize_controls_frame)
         self.new_folder_entry.grid(row=3, column=0, padx=10, pady=(0, 10), sticky="ew")
+        self.new_folder_entry.bind("<FocusIn>", self.on_new_folder_entry_focus_in)
+        self.new_folder_entry.bind("<FocusOut>", self.on_new_folder_entry_focus_out)
 
         self.action_type_var = ctk.StringVar(value="Move")
         self.move_radio = ctk.CTkRadioButton(self.organize_controls_frame, text="Move Files (original removed)",
@@ -178,6 +181,7 @@ class OrderlyApp(ctk.CTk):
         self.update_search_options_state()
         self.update_status("Welcome to Orderly! Select a folder to begin.")
         self.on_search_entry_focus_out(None)
+        self.on_new_folder_entry_focus_out(None)
         self.update_organize_ui_state()
 
     # --- END INITIALIZATION --------------------------------------------
@@ -269,6 +273,18 @@ class OrderlyApp(ctk.CTk):
         if not self.search_entry.get():
             self.search_entry.insert(0, self.search_entry_placeholder_text_value)
             self.search_entry.configure(text_color=self.placeholder_color)
+
+    def on_new_folder_entry_focus_in(self, event):
+        """Clears placeholder text on focus and sets normal text color."""
+        if self.new_folder_entry.get() == self.new_folder_entry_placeholder_text_value:
+            self.new_folder_entry.delete(0, "end")
+            self.new_folder_entry.configure(text_color=self.normal_text_color)
+
+    def on_new_folder_entry_focus_out(self, event):
+        """Restores placeholder text if entry is empty after losing focus."""
+        if not self.new_folder_entry.get():
+            self.new_folder_entry.insert(0, self.new_folder_entry_placeholder_text_value)
+            self.new_folder_entry.configure(text_color=self.placeholder_color)
 
     def switch_to_organize_tab(self):
         """Switches the active tab to the 'Organize Files' tab."""
